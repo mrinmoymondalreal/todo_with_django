@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'app/style.css' %}">
+
+    <!--- Tailwind CSS & Daisy UI CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.18.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="res/favicon.ico">
+
+    <title>TO-DOIT</title>
+</head>
+<body>
+
+    <!-- Copyright -->
+    
+    <div class="container">
+        <header>
+            <h1>Todo List</h1>
+            <!-- Error message -->
+            <div class="alert-message"></div>
+            <form action="/addTodo/" method="post" class="input-section">
+                {% csrf_token %}
+                <input type="text" name="content" placeholder="Add a todo . . ." class="input input-bordered input-secondary w-full max-w-xs" required/>
+                <input type="date" name="date_created" class="input input-bordered input-secondary w-full max-w-xs schedule-date" />
+                <button type="submit" class="btn btn-secondary add-task-button">
+                    <i class="bx bx-plus bx-sm"></i>
+                </button>
+            </form>
+        </header>
+
+        <div class="todos-filter">
+            <!-- <div class="dropdown">
+                <label tabindex="0" class="btn m-1">Filter</label>
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li onclick="filterTodos('all')"><a>All</a></li>
+                    <li onclick="filterTodos('pending')"><a>Pending</a></li>
+                    <li onclick="filterTodos('completed')"><a>Completed</a></li>
+                </ul>
+            </div> -->
+            <a href="/deleteAllTodo" class="btn btn-secondary delete-all-btn">
+                Delete All
+            </a>
+        </div>
+
+         <table class="table w-full">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="todos-list-body">
+                {% for todo_item in all_todos %}
+                <tr class="todo-item">
+                    <td class="{% if todo_item.is_completed == True %}line-through{% endif %}">{{ todo_item.content }}</td>
+                    <td>{{ todo_item.date_created }}</td>
+                    {% if todo_item.is_completed == True %}
+                        <td>Completed</td>
+                    {% else %}
+                        <td>Pending</td>
+                    {%endif%}
+                    <td>
+                        <a href="/deleteTodo?id={{ todo_item.id }}" class="btn btn-error btn-sm">
+                            <i class="bx bx-trash bx-xs"></i>  
+                        </a>
+                        <a href="/markTodoCompleted?id={{ todo_item.id }}" class="btn btn-success btn-sm" onclick="uiManager.handleToggleStatus('lggtw8l98cglphgiy2nwdd')">
+                        <i class="bx bx-check bx-xs"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>
