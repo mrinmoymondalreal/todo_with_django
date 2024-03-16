@@ -24,5 +24,6 @@ urlpatterns = [
     path('deleteTodo/', deleteTodo),
     path('markTodoCompleted/', markTodoCompleted),
     path('deleteAllTodo/', deleteAllTodo),
+    path('editTodo/', editTodo),
     path('admin/', admin.site.urls),
 ]

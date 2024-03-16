@@ -33,6 +33,13 @@ def markTodoCompleted(request):
   todo.save()
   return HttpResponseRedirect('/')
 
+def editTodo(request):
+  todo = TodoItem.objects.get(id=request.POST['id'])
+  todo.content = request.POST['content']
+  todo.date_created = request.POST['date_created']
+  todo.save()
+  return HttpResponseRedirect('/')
+
 def deleteAllTodo(request):
   for todo in TodoItem.objects.all():
     todo.delete()
